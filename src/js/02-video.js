@@ -1,6 +1,6 @@
 import VimeoPlayer from '@vimeo/player';
 import throttle from 'lodash.throttle';
-
+import { save, load } from './helpers'
 const iframe = document.querySelector("iframe");
 const player = new VimeoPlayer(iframe);
 
@@ -12,12 +12,24 @@ const player = new VimeoPlayer(iframe);
 //   console.log('title:', title);
 // });
 
+function timeSave(data) {
+    let seconds = data.seconds;
+    const key = 'videoplayer-current-time';
+    const value = seconds;
+    save(key, value);
+}
 
-const timeSave = function (data) {
-  let seconds = data.seconds;
-  const key = 'videoplayer-current-time';
-  const value = seconds;
-  saveToLS(key, value);
-};
+player.on('timeupdate', throttle(timeSave, 1000));
 
-player.on('timeupdate', timeSave);
+player
+  .setCurrentTime(load('videoplayer-current-time'))
+  .then(function (seconds) {
+  })
+  .catch(function (error) {
+    switch (error.name) {
+        case 'RangeError':
+        break;
+        default:
+        break;
+    }
+  });
