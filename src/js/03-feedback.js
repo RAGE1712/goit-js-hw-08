@@ -8,9 +8,17 @@ const refs = {
 refs.formElem.addEventListener("input", throttle(onFormInput, 500))
 refs.formElem.addEventListener('submit', onFormSubmit)
 
+
+
 function onFormInput(event) {
-    const key = event.target.name;
-    const value = event.target.value;
+    const emailValue = refs.formElem.elements.email.value;
+    const messageValue = refs.formElem.elements.message.value; 
+    const formValueObj = {
+      email: emailValue,
+      message : messageValue
+    }
+  const value = formValueObj;
+  const key = 'feedback-form-state';
     save(key, value);
 }
 
@@ -23,19 +31,23 @@ function onLoad() {
 onLoad()
 
 function onFormSubmit(event) {
-    event.preventDefault();
-    const email = refs.formElem.elements.email.value;
-    const message = refs.formElem.elements.message.value;
+  event.preventDefault();
+  const email = refs.formElem.elements.email.value;
+  const message = refs.formElem.elements.message.value; 
+  
+    if (email === '' || message === '') {
+      alert('Всі поля повинні бути заповнені!');
+    } else {
+     
+       const obj = {
+        email,
+        message,
+      };
+      console.log(obj);
 
-    const obj = {
-      email,
-      message,
-    };
-    console.log(obj)
-
-    event.target.reset();
-    localStorage.removeItem('email');
-    localStorage.removeItem('message')
+      event.target.reset();
+      localStorage.removeItem('feedback-form-state');
+    }   
 }
 
 
