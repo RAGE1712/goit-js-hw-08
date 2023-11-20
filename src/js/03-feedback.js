@@ -23,10 +23,9 @@ function onFormInput(event) {
 }
 
 function onLoad() {
-    const email = load('email');
-    const message = load('message')
-    refs.formElem.elements.email.value = email || "";
-    refs.formElem.elements.message.value = message || "";
+    const formValueObj = load('feedback-form-state');
+    refs.formElem.elements.email.value = formValueObj.email || '';
+    refs.formElem.elements.message.value = formValueObj.message || '';
 }
 onLoad()
 
